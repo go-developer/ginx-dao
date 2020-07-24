@@ -24,7 +24,7 @@ type User struct {
 	Password   string `json:"password"`    //密码
 	Salt       string `json:"salt"`        //私钥
 	CreateTime string `json:"create_time"` //创建时间
-	UpdateTime string `json:"update_time"` //更新时间
+	ModifyTime string `json:"modify_time"` //更新时间
 }
 
 // 状态枚举值
@@ -38,3 +38,36 @@ const (
 	// UserStatusDelete 删除
 	UserStatusDelete = 3
 )
+
+// 状态表
+var userStatusTable = map[uint]string{
+	UserStatusNew:       "新建",
+	UserStatusNormal:    "正常",
+	UserStatusForbidden: "禁用",
+	UserStatusDelete:    "删除",
+}
+
+// GetUserStatusTable 获取完整的用户表
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2020/07/25 01:03:51
+func GetUserStatusTable() map[uint]string {
+	return userStatusTable
+}
+
+// GetUserStatusDesc 获取状态的描述
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2020/07/25 01:06:31
+func GetUserStatusDesc(status uint) string {
+	var (
+		statusDesc string
+		exist      bool
+	)
+	if statusDesc, exist = GetUserStatusTable()[status]; !exist {
+		return "未知"
+	}
+	return statusDesc
+}
