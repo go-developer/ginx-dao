@@ -15,16 +15,18 @@ package define
 //
 // Author : go_developer@163.com<张德满>
 type User struct {
-	ID         uint64 `json:"id"`          //主键id
-	Mail       string `json:"mail"`        //邮件
-	Phone      string `json:"phone"`       //手机号
-	Status     uint   `json:"status"`      //状态
-	Role       uint64 `json:"role"`        //角色ID
-	Name       string `json:"name"`        //姓名
-	Password   string `json:"password"`    //密码
-	Salt       string `json:"salt"`        //私钥
-	CreateTime string `json:"create_time"` //创建时间
-	ModifyTime string `json:"modify_time"` //更新时间
+	ID           uint64 `json:"id"`             //主键id
+	Mail         string `json:"mail"`           //邮件
+	Phone        string `json:"phone"`          //手机号
+	Status       uint   `json:"status"`         //状态
+	Role         uint64 `json:"role"`           //角色ID
+	Name         string `json:"name"`           //姓名
+	Password     string `json:"password"`       //密码
+	Salt         string `json:"salt"`           //私钥
+	CreateUserID uint64 `json:"create_user_id"` //创建人ID
+	ModifyUserID uint64 `json:"modify_user_id"` // 修改人ID
+	CreateTime   string `json:"create_time"`    //创建时间
+	ModifyTime   string `json:"modify_time"`    //更新时间
 }
 
 // 状态枚举值
