@@ -1,11 +1,5 @@
 package dao
 
-import (
-	"github.com/go-developer/ginx-dao/define"
-	"github.com/go-developer/go-util/util"
-	godb "github.com/go-developer/gorm-mysql"
-)
-
 var (
 	// Project 项目表操作实例
 	//
@@ -31,5 +25,3 @@ func NewProjectDao() *ProjectDao {
 type ProjectDao struct {
 	BaseDao
 }
-
-
