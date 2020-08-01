@@ -54,3 +54,17 @@ func (ud *UserDao) GetDetailByPhone(dc *godb.DBClient, phone string) (*define.Us
 	ormDB = dc.GormDB.Table(define.UserTableName).Where("phone = ?", phone).First(&detail)
 	return &detail, ormDB.RecordNotFound(), ormDB.Error
 }
+
+// GetDetailByID 根据ID获取用户详情
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2020/08/01 20:17:26
+func (ud *UserDao) GetDetailByID(dc *godb.DBClient, userID uint64) (*define.User, bool, error) {
+	var (
+		detail define.User
+		ormDB  *gorm.DB
+	)
+	ormDB = dc.GormDB.Table(define.UserTableName).Where("id = ?", userID).First(&detail)
+	return &detail, ormDB.RecordNotFound(), ormDB.Error
+}
