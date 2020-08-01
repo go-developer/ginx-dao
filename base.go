@@ -20,7 +20,7 @@ import (
 // Author : go_developer@163.com<张德满>
 //
 // Date : 2020/07/19 19:29:27
-func InitDatabase(dbConfig *godb.Mysql) {
+func InitDatabase(dbConfig *godb.DBConfig) {
 	godb.InitDatabaseClient(dbConfig)
 }
 
