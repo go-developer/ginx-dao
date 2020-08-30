@@ -17,6 +17,8 @@ github.com/go-developer/gorm-mysql v0.0.0-20200719101849-c0c3872fbaef h1:FgrNGt4
 github.com/go-developer/gorm-mysql v0.0.0-20200719101849-c0c3872fbaef/go.mod h1:LQ+xOltsUNU9aa4/wyyXo6ngrRG7bBa3EjgghEtln6Y=
 github.com/go-developer/gorm-mysql v0.0.0-20200727151801-4d663aa86396 h1:L8Dyg1rXcXZtL9M5x8tabgmMSJc/YOnsrB9xP5oqrIo=
 github.com/go-developer/gorm-mysql v0.0.0-20200727151801-4d663aa86396/go.mod h1:LQ+xOltsUNU9aa4/wyyXo6ngrRG7bBa3EjgghEtln6Y=
+github.com/go-developer/gorm-mysql v0.0.0-20200802121817-f502e27ee318 h1:tbQFvSBaQmDn+WsGG1787XCnOR1j0aABCecesPVXmWQ=
+github.com/go-developer/gorm-mysql v0.0.0-20200802121817-f502e27ee318/go.mod h1:LQ+xOltsUNU9aa4/wyyXo6ngrRG7bBa3EjgghEtln6Y=
 github.com/go-playground/assert/v2 v2.0.1/go.mod h1:VDjEfimB/XKnb+ZQfWdccd7VUvScMdVu0Titje2rxJ4=
 github.com/go-playground/locales v0.13.0 h1:HyWk6mgj5qFqCT5fjGBuRArbVDfE4hi8+e8ceBS/t7Q=
 github.com/go-playground/locales v0.13.0/go.mod h1:taPMhCMXrRLJO55olJkUXHZBHCxTMfnGwq/HNwmWNS8=

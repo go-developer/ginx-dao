@@ -12,11 +12,8 @@ var (
 // Author : go_developer@163.com<张德满>
 //
 // Date : 2020/07/27 23:06:05
-func NewProjectDao() *ProjectDao {
-	if nil == Project {
-		Project = &ProjectDao{}
-	}
-	return Project
+func init()  {
+	Project = &ProjectDao{}
 }
 
 // ProjectDao 项目表管理
