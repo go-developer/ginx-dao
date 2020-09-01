@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"github.com/go-developer/ginx-dao/define"
 	godb "github.com/go-developer/gorm-mysql"
 )
 
@@ -26,5 +25,5 @@ func (bd *BaseDao) ModifyStatus(dc *godb.DBClient, table string, primaryID uint6
 //
 // Date : 2020/07/27 23:11:17
 func (bd *BaseDao) Create(dc *godb.DBClient, table string, data interface{}) error {
-	return dc.GormDB.Table(define.ProjectTableName).Create(data).Error
+	return dc.GormDB.Table(table).Create(data).Error
 }
