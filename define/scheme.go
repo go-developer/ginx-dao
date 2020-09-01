@@ -15,7 +15,7 @@ package define
 //
 // Author : go_developer@163.com<张德满>
 type Scheme struct {
-	ID           uint64 `json:"id"`             //主键ID
+	ID           uint64 `json:"id" gorm:"id"`   //主键ID
 	Scheme       string `json:"scheme"`         //协议
 	Status       uint   `json:"status"`         //状态
 	CreateUserID uint64 `json:"create_user_id"` //创建人ID

@@ -10,4 +10,14 @@ const (
 	//
 	// Author : go_developer@163.com<张德满>
 	UserTableName = "ginx_user"
+
+	// SchemeTableName scheme表
+	//
+	// Author : go_developer@163.com<张德满>
+	SchemeTableName = "ginx_scheme"
+
+	// MethodTableName method表
+	//
+	// Author : go_developer@163.com<张德满>
+	MethodTableName = "ginx_method"
 )
