@@ -49,3 +49,10 @@ func (sd *schemeDao) GetAllScheme(dbClient *godb.DBClient) ([]*define.Scheme, er
 	err = dbClient.GormDB.Table(define.SchemeTableName).Find(&result).Error
 	return result, err
 }
+
+// ChangeStatus 修改 scheme 状态
+//
+// Author : go_developer@163.com<张德满>
+func (sd *schemeDao) ChangeStatus(dbClient *godb.DBClient, schemeID uint64, currentStatus uint, targetStatus uint) (int64, error) {
+	return sd.ModifyStatus(dbClient, define.SchemeTableName, schemeID, currentStatus, targetStatus)
+}
