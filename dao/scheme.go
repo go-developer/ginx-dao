@@ -56,3 +56,11 @@ func (sd *schemeDao) GetAllScheme(dbClient *godb.DBClient) ([]*define.Scheme, er
 func (sd *schemeDao) ChangeStatus(dbClient *godb.DBClient, schemeID uint64, currentStatus uint, targetStatus uint) (int64, error) {
 	return sd.ModifyStatus(dbClient, define.SchemeTableName, schemeID, currentStatus, targetStatus)
 }
+
+// Update 更新scheme信息
+//
+// Author : go_developer@163.com<张德满>
+func (sd *schemeDao) Update(dbClient *godb.DBClient, schemeID uint64, schemeName string) (int64, error) {
+	db := dbClient.GormDB.Table(define.SchemeTableName).Where("id = ?", schemeID).Limit(1).Update(map[string]interface{}{"scheme": schemeName})
+	return db.RowsAffected, db.Error
+}
