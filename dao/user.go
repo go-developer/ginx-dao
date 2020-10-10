@@ -38,7 +38,7 @@ type UserDao struct {
 //
 // Date : 2020/08/01 20:06:00
 func (ud *UserDao) CreateUser(dc *godb.DBClient, info *define.User) error {
-	return ud.Create(dc, define.UserTableName, info)
+	return ud.Create(dc, define.DBTableUser, info)
 }
 
 // GetDetailByPhone 根据手机号获取用户详情
@@ -51,7 +51,7 @@ func (ud *UserDao) GetDetailByPhone(dc *godb.DBClient, phone string) (*define.Us
 		detail define.User
 		ormDB  *gorm.DB
 	)
-	ormDB = dc.GormDB.Table(define.UserTableName).Where("phone = ?", phone).First(&detail)
+	ormDB = dc.GormDB.Table(define.DBTableUser).Where("phone = ?", phone).First(&detail)
 	return &detail, ormDB.RecordNotFound(), ormDB.Error
 }
 
@@ -65,6 +65,6 @@ func (ud *UserDao) GetDetailByID(dc *godb.DBClient, userID uint64) (*define.User
 		detail define.User
 		ormDB  *gorm.DB
 	)
-	ormDB = dc.GormDB.Table(define.UserTableName).Where("id = ?", userID).First(&detail)
+	ormDB = dc.GormDB.Table(define.DBTableUser).Where("id = ?", userID).First(&detail)
 	return &detail, ormDB.RecordNotFound(), ormDB.Error
 }

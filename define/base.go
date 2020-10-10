@@ -1,23 +1,30 @@
 package define
 
-//定义表名
+// 定义表名
 const (
-	// ProjectTableName 项目表名
+	// DBTableProject 项目表名
 	//
 	// Author : go_developer@163.com<张德满>
-	ProjectTableName = "ginx_project"
+	DBTableProject = "ginx_project"
 	// UserTableName 用户表
 	//
 	// Author : go_developer@163.com<张德满>
-	UserTableName = "ginx_user"
+	DBTableUser = "ginx_user"
 
 	// SchemeTableName scheme表
 	//
 	// Author : go_developer@163.com<张德满>
-	SchemeTableName = "ginx_scheme"
+	DBTableScheme = "ginx_scheme"
 
-	// MethodTableName method表
+	// DBTableMethod method表
 	//
 	// Author : go_developer@163.com<张德满>
-	MethodTableName = "ginx_method"
+	DBTableMethod = "ginx_method"
+
+	// DBTableProjectAPI project_api表
+	//
+	// Author : go_developer@163.com<张德满>
+	//
+	// Date : 3:34 下午 2020/10/10
+	DBTableProjectAPI = "ginx_project_api"
 )

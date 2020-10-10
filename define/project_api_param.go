@@ -15,18 +15,18 @@ package define
 //
 // Author : go_developer@163.com<张德满>
 type ProjectAPIParam struct {
-	ID           uint64 `json:"id"`             //主键ID
-	ProjectID    uint64 `json:"project_id"`     //项目ID
-	APIID        uint64 `json:"api_id"`         //接口ID
-	ParamName    string `json:"param_name"`     //参数名称
-	ParamType    uint   `json:"param_type"`     //参数类型
-	IsRequired   uint   `json:"is_required"`    //是否必填
-	ExampleValue string `json:"example_value"`  //请求参数示例值
-	Status       uint   `json:"status"`         //方法状态
-	CreateUserID uint64 `json:"create_user_id"` //创建人ID
-	ModifyUserID uint64 `json:"modify_user_id"` //修改人ID
-	CreateTime   string `json:"create_time"`    //创建时间
-	ModifyTime   string `json:"modify_time"`    //修改时间
+	ID           uint64 `json:"id"`             // 主键ID
+	ProjectID    uint64 `json:"project_id"`     // 项目ID
+	APIID        uint64 `json:"api_id"`         // 接口ID
+	ParamName    string `json:"param_name"`     // 参数名称
+	ParamType    uint   `json:"param_type"`     // 参数类型
+	IsRequired   uint   `json:"is_required"`    // 是否必填
+	ExampleValue string `json:"example_value"`  // 请求参数示例值
+	Status       uint   `json:"status"`         // 方法状态
+	CreateUserID uint64 `json:"create_user_id"` // 创建人ID
+	ModifyUserID uint64 `json:"modify_user_id"` // 修改人ID
+	CreateTime   string `json:"create_time"`    // 创建时间
+	ModifyTime   string `json:"modify_time"`    // 修改时间
 }
 
 const (
