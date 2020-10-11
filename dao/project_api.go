@@ -10,8 +10,6 @@
 package dao
 
 import (
-	"errors"
-
 	"github.com/go-developer/ginx-dao/define"
 	godb "github.com/go-developer/gorm-mysql"
 )
@@ -77,40 +75,13 @@ func (pad *projectAPIDao) GetProjectAPIByProjectID(dbClient *godb.DBClient, proj
 // Author : zhangdeman001@ke.com<张德满>
 //
 // Date : 5:17 下午 2020/10/10
-func (pad *projectAPIDao) GetProjectAPIList(dbClient *godb.DBClient, page int64, limit int64, where map[string]interface{}, whereIn map[string][]interface{}) ([]*define.ProjectAPI, error) {
-	whereSql := ""
-	bindDataList := make([]interface{}, 0)
-	for field, value := range where {
-		bindDataList = append(bindDataList, value)
-		if len(whereSql) > 0 {
-			whereSql = whereSql + " AND " + field + " = ? "
-		} else {
-			whereSql = field + " = ?"
-		}
-	}
-
-	for field, valueList := range whereIn {
-		if len(valueList) == 0 {
-			return make([]*define.ProjectAPI, 0), errors.New(field + "设置in条件，但是无任何取值")
-		}
-		bindDataList = append(bindDataList, valueList...)
-		if len(whereSql) > 0 {
-			whereSql = " AND " + field + " IN ( "
-
-		} else {
-			whereSql = field + " IN ( "
-		}
-		for i := 0; i < len(valueList)-1; i++ {
-			whereSql = whereSql + " ?, "
-		}
-		whereSql = whereSql + " )"
-	}
+func (pad *projectAPIDao) GetProjectAPIList(dbClient *godb.DBClient, optionList ...SetSearchOption) ([]*define.ProjectAPI, error) {
 
 	var (
 		apiList []*define.ProjectAPI
 		err     error
 	)
-	if err = dbClient.GormDB.Table(define.DBTableProjectAPI).Where(whereSql, bindDataList...).Limit(limit).Offset((page - 1) * limit).Find(&apiList).Error; nil != err {
+	if err = pad.GetDataList(dbClient, define.DBTableProjectAPI, &apiList, optionList...); nil != err {
 		return make([]*define.ProjectAPI, 0), err
 	}
 	return apiList, nil
