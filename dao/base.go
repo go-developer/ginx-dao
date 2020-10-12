@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	godb "github.com/go-developer/gorm-mysql"
+	"github.com/jinzhu/gorm"
 )
 
 // BaseDao 基础dao
@@ -40,7 +41,20 @@ func (bd *BaseDao) Create(dc *godb.DBClient, table string, data interface{}) err
 // Author : go_developer@163.com<张德满>
 //
 // Date : 9:57 下午 2020/10/11
-func (pad *projectAPIDao) GetDataList(dbClient *godb.DBClient, table string, result interface{}, optionList ...SetSearchOption) error {
+func (bd *BaseDao) GetDataList(dbClient *godb.DBClient, table string, result interface{}, optionList ...SetSearchOption) error {
+	if queryObject, err := bd.buildQueryObject(dbClient, table, result, optionList...); nil != err {
+		return err
+	} else {
+		return queryObject.Find(result).Error
+	}
+}
+
+// buildQueryObject 构建查询对象
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 12:00 下午 2020/10/12
+func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, result interface{}, optionList ...SetSearchOption) (*gorm.DB, error) {
 	option := &SearchOption{
 		Page:    0,
 		Size:    0,
@@ -50,7 +64,7 @@ func (pad *projectAPIDao) GetDataList(dbClient *godb.DBClient, table string, res
 	// 设置查询条件
 	for _, o := range optionList {
 		if err := o.Func(option, o.Data); nil != err {
-			return err
+			return nil, err
 		}
 	}
 	whereSql := ""
@@ -66,7 +80,7 @@ func (pad *projectAPIDao) GetDataList(dbClient *godb.DBClient, table string, res
 
 	for field, valueList := range option.WhereIn {
 		if len(valueList) == 0 {
-			return errors.New(field + " set where in condition，but value is empty")
+			return nil, errors.New(field + " set where in condition，but value is empty")
 		}
 		bindDataList = append(bindDataList, valueList...)
 		if len(whereSql) > 0 {
@@ -81,17 +95,5 @@ func (pad *projectAPIDao) GetDataList(dbClient *godb.DBClient, table string, res
 		whereSql = whereSql + " )"
 	}
 
-	if option.Page <= 0 {
-		option.Page = 1
-	}
-
-	if option.Size <= 0 {
-		option.Size = 20
-	}
-
-	if option.Size > 100 {
-		option.Size = 100
-	}
-
-	return dbClient.GormDB.Table(table).Where(whereSql, bindDataList...).Limit(option.Size).Offset((option.Page - 1) * option.Size).Find(result).Error
+	return dbClient.GormDB.Table(table).Where(whereSql, bindDataList...).Limit(option.Size).Offset((option.Page - 1) * option.Size), nil
 }
