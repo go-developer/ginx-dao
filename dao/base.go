@@ -42,7 +42,7 @@ func (bd *BaseDao) Create(dc *godb.DBClient, table string, data interface{}) err
 //
 // Date : 9:57 下午 2020/10/11
 func (bd *BaseDao) GetDataList(dbClient *godb.DBClient, table string, result interface{}, optionList ...SetSearchOption) error {
-	if queryObject, err := bd.buildQueryObject(dbClient, table, result, optionList...); nil != err {
+	if queryObject, err := bd.buildQueryObject(dbClient, table, optionList...); nil != err {
 		return err
 	} else {
 		return queryObject.Find(result).Error
@@ -54,7 +54,7 @@ func (bd *BaseDao) GetDataList(dbClient *godb.DBClient, table string, result int
 // Author : go_developer@163.com<张德满>
 //
 // Date : 12:00 下午 2020/10/12
-func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, result interface{}, optionList ...SetSearchOption) (*gorm.DB, error) {
+func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, optionList ...SetSearchOption) (*gorm.DB, error) {
 	option := &SearchOption{
 		Page:    0,
 		Size:    0,

@@ -17,10 +17,34 @@ import "errors"
 //
 // Date : 10:02 下午 2020/10/11
 type SearchOption struct {
-	Page    int                      // 页码
-	Size    int                      // 每页数量
-	Where   map[string]interface{}   // where 条件
-	WhereIn map[string][]interface{} // whereIn 条件
+	Page       int                      // 页码
+	Size       int                      // 每页数量
+	Where      map[string]interface{}   // where 条件
+	WhereIn    map[string][]interface{} // whereIn 条件
+	WhereNotIn map[string][]interface{} // where not in 条件
+	Expression []ExpressionOperate      // 表达式操作 如： create_time >= time.Now.Unix()
+	QuerySql   []QuerySql               // 设置原始的sql
+}
+
+// QuerySql 手动设置sql
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2:48 下午 2020/10/12
+type QuerySql struct {
+	Sql      string        // sql段
+	BindData []interface{} // 绑定的数据
+}
+
+// ExpressionOperate ...
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2:45 下午 2020/10/12
+type ExpressionOperate struct {
+	Field    string      // 字段
+	Operate  string      // 操作符 > < >= <= != =
+	BindData interface{} // 绑定的数据
 }
 
 // SearchOptionFunc 设置检索的参数
@@ -78,9 +102,20 @@ func SetSearchOptionSize(so *SearchOption, data interface{}) error {
 func SetSearchOptionWhere(so *SearchOption, data interface{}) error {
 	var (
 		success bool
+		where   map[string]interface{}
 	)
-	if so.Where, success = data.(map[string]interface{}); !success {
+	if nil == so.Where {
+		so.Where = make(map[string]interface{})
+	}
+	if where, success = data.(map[string]interface{}); !success {
 		return errors.New("where is not map[string]interface{}")
+	}
+
+	if nil == so.Where {
+		so.Where = make(map[string]interface{})
+	}
+	for k := range where {
+		so.Where[k] = where[k]
 	}
 	return nil
 }
@@ -93,9 +128,71 @@ func SetSearchOptionWhere(so *SearchOption, data interface{}) error {
 func SetSearchOptionWhereIn(so *SearchOption, data interface{}) error {
 	var (
 		success bool
+		whereIn map[string][]interface{}
 	)
-	if so.WhereIn, success = data.(map[string][]interface{}); !success {
+	if whereIn, success = data.(map[string][]interface{}); !success {
 		return errors.New("whereIn is not map[string][]interface{}")
 	}
+	if nil == so.WhereIn {
+		so.WhereIn = make(map[string][]interface{})
+	}
+	for k := range whereIn {
+		so.WhereIn[k] = whereIn[k]
+	}
+	return nil
+}
+
+// SetSearchOptionWhereNotIn 设置where not in条件
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2:54 下午 2020/10/12
+func SetSearchOptionWhereNotIn(so *SearchOption, data interface{}) error {
+	var (
+		success bool
+	)
+	if so.WhereNotIn, success = data.(map[string][]interface{}); !success {
+		return errors.New("whereIn is not map[string][]interface{}")
+	}
+	return nil
+}
+
+// SetSearchOptionExpress 设置表达式
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2:55 下午 2020/10/12
+func SetSearchOptionExpress(so *SearchOption, data interface{}) error {
+	var (
+		success    bool
+		expression []ExpressionOperate
+	)
+	if expression, success = data.([]ExpressionOperate); !success {
+		return errors.New("exception format is not []ExpressionOperate")
+	}
+	if nil == so.Expression {
+		so.Expression = make([]ExpressionOperate, 0)
+	}
+	so.Expression = append(so.Expression, expression...)
+	return nil
+}
+
+// SetSearchOptionQuerySql 设置原生的query sql
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 3:13 下午 2020/10/12
+func SetSearchOptionQuerySql(so *SearchOption, data interface{}) error {
+	var (
+		success  bool
+		querySql []QuerySql
+	)
+	if querySql, success = data.([]QuerySql); !success {
+		return errors.New("query sql format is not []QuerySql")
+	}
+	if nil == so.QuerySql {
+		so.QuerySql = make([]QuerySql, 0)
+	}
+	so.QuerySql = append(so.QuerySql, querySql...)
 	return nil
 }
