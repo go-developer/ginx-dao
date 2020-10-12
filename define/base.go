@@ -27,4 +27,11 @@ const (
 	//
 	// Date : 3:34 下午 2020/10/10
 	DBTableProjectAPI = "ginx_project_api"
+
+	// DBTableProjectAPIParam api参数信息表
+	//
+	// Author : go_developer@163.com<张德满>
+	//
+	// Date : 4:23 下午 2020/10/12
+	DBTableProjectAPIParam = "ginx_project_api_param"
 )

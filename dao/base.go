@@ -2,6 +2,7 @@ package dao
 
 import (
 	"errors"
+	"strings"
 
 	godb "github.com/go-developer/gorm-mysql"
 	"github.com/jinzhu/gorm"
@@ -96,4 +97,57 @@ func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, optio
 	}
 
 	return dbClient.GormDB.Table(table).Where(whereSql, bindDataList...).Limit(option.Size).Offset((option.Page - 1) * option.Size), nil
+}
+
+// getBatchCreateSql 获取批量写入数据的sql
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 4:35 下午 2020/10/12
+func (bd *BaseDao) getBatchCreateSql(table string, valueList []map[string]interface{}) (string, []interface{}, error) {
+	if len(valueList) == 0 {
+		return "", nil, errors.New(table + " batch create data with nothing")
+	}
+
+	// 提取字段列表
+	fieldList := make([]string, 0)
+	for field := range valueList[0] {
+		fieldList = append(fieldList, field)
+	}
+	sql := "INSERT INTO " + table + "(`" + strings.Join(fieldList, "`,`") + "`) VALUES "
+	// 记录绑定数据
+	bindDataList := make([]interface{}, 0)
+	// 组装写入的数据
+	writeDataList := make([]string, 0)
+	for _, item := range valueList {
+		// 按组装字段的顺序组装数据
+		tmpValList := make([]string, 0)
+		for i := 0; i < len(fieldList); i++ {
+			tmpValList = append(tmpValList, "?")
+			bindDataList = append(bindDataList, item[fieldList[i]])
+		}
+		writeDataList = append(writeDataList, "("+strings.Join(tmpValList, ",")+")")
+	}
+	sql = sql + strings.Join(writeDataList, ",") + ";"
+	return sql, bindDataList, nil
+}
+
+// BatchCreate 批量写入数据
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 4:50 下午 2020/10/12
+func (bd *BaseDao) BatchCreate(dbClient *godb.DBClient, table string, valueList []map[string]interface{}) error {
+	var (
+		batchCreateSql string
+		err            error
+		bindDataList   []interface{}
+	)
+	if batchCreateSql, bindDataList, err = bd.getBatchCreateSql(table, valueList); nil != err {
+		return err
+	}
+	if _, err = dbClient.GormDB.DB().Exec(batchCreateSql, bindDataList...); nil != err {
+		return err
+	}
+	return nil
 }
