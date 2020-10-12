@@ -111,8 +111,15 @@ func (bd *BaseDao) getBatchCreateSql(table string, valueList []map[string]interf
 
 	// 提取字段列表
 	fieldList := make([]string, 0)
-	for field := range valueList[0] {
-		fieldList = append(fieldList, field)
+	fieldMap := make(map[string]bool)
+	for _, item := range valueList {
+		for field := range item {
+			if _, exist := fieldMap[field]; exist {
+				continue
+			}
+			fieldList = append(fieldList, field)
+			fieldMap[field] = true
+		}
 	}
 	sql := "INSERT INTO " + table + "(`" + strings.Join(fieldList, "`,`") + "`) VALUES "
 	// 记录绑定数据
@@ -124,7 +131,11 @@ func (bd *BaseDao) getBatchCreateSql(table string, valueList []map[string]interf
 		tmpValList := make([]string, 0)
 		for i := 0; i < len(fieldList); i++ {
 			tmpValList = append(tmpValList, "?")
-			bindDataList = append(bindDataList, item[fieldList[i]])
+			if bindValue, exist := item[fieldList[i]]; exist {
+				bindDataList = append(bindDataList, bindValue)
+			} else {
+				bindDataList = append(bindDataList, "")
+			}
 		}
 		writeDataList = append(writeDataList, "("+strings.Join(tmpValList, ",")+")")
 	}

@@ -22,10 +22,10 @@ import (
 func TestGetBatchCreateSql(t *testing.T) {
 	table := "test"
 	valueList := []map[string]interface{}{
-		{"name": "zhangdeman", "age": 18},
+		{"name": "zhangdeman", "age": 18, "lala": "lala"},
 		{"name": "zhangdeman1", "age": 181},
 		{"name": "zhangdeman2", "age": 182},
-		{"name": "zhangdeman3", "age": 183},
+		{"name": "zhangdeman3", "age": 183, "extra": "extra"},
 	}
 	bd := new(BaseDao)
 	sql, data, err := bd.getBatchCreateSql(table, valueList)
