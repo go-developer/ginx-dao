@@ -10,6 +10,8 @@
 package dao
 
 import (
+	"errors"
+
 	"github.com/go-developer/ginx-dao/define"
 	godb "github.com/go-developer/gorm-mysql"
 )
@@ -85,4 +87,20 @@ func (pad *projectAPIDao) GetProjectAPIList(dbClient *godb.DBClient, optionList 
 		return make([]*define.ProjectAPI, 0), err
 	}
 	return apiList, nil
+}
+
+// Modify 修改api信息
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 11:40 上午 2020/10/12
+func (pad *projectAPIDao) Modify(dbClient *godb.DBClient, apiID int64, apiInfo *define.ProjectAPI) error {
+	obj := dbClient.GormDB.Table(define.DBTableProjectAPI).Where("id = ?", apiID).Limit(1).Update(apiInfo)
+	if nil != obj.Error {
+		return obj.Error
+	}
+	if obj.RowsAffected <= 0 {
+		return errors.New("modify api affected rows is 0")
+	}
+	return nil
 }
