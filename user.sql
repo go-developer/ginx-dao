@@ -96,6 +96,7 @@ CREATE TABLE `ginx_project_api_param` (
   `status` INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '项目状态: 0 - 待激活 1 - 正常 2 - 停用',
   `param_type` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '参数类型: 0 - string 1 - int64 2 - float64 3 - list(指定分隔符) 4 - list(json序列化后的list) 5 - json(map[string]) 6 - 其他',
   `is_required` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否必传',
+  `default_value` varchar(1024) NOT NULL default '' comment '非必传参数的默认值',
   `example_value` VARCHAR(2048) NOT NULL DEFAULT '' COMMENT '示例的值',
   `create_user_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建人ID',
   `modify_user_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改人ID',
