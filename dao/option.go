@@ -18,7 +18,7 @@ import "errors"
 // Date : 10:02 下午 2020/10/11
 type SearchOption struct {
 	Page       int                      // 页码
-	Size       int                      // 每页数量
+	Size       int64                    // 每页数量
 	Where      map[string]interface{}   // where 条件
 	WhereIn    map[string][]interface{} // whereIn 条件
 	WhereNotIn map[string][]interface{} // where not in 条件
