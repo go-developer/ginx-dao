@@ -88,7 +88,7 @@ func SetSearchOptionSize(so *SearchOption, data interface{}) error {
 	var (
 		success bool
 	)
-	if so.Size, success = data.(int); !success {
+	if so.Size, success = data.(int64); !success {
 		return errors.New("size is not int")
 	}
 	return nil
