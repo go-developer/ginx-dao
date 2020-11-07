@@ -82,3 +82,12 @@ func (sd *schemeDao) GetSchemeList(dbClient *godb.DBClient, optionList ...SetSea
 	}
 	return schemeList, nil
 }
+
+// GetSchemeCount 查询scheme数量
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2020/11/08 02:09:09
+func (sd *schemeDao) GetSchemeCount(dbClient *godb.DBClient, optionList ...SetSearchOption) (int64, error) {
+	return sd.GetTotalDataCount(dbClient, define.DBTableScheme, optionList...)
+}
