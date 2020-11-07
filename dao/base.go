@@ -68,14 +68,14 @@ func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, optio
 			return nil, err
 		}
 	}
-	whereSql := ""
+	whereSQL := ""
 	bindDataList := make([]interface{}, 0)
 	for field, value := range option.Where {
 		bindDataList = append(bindDataList, value)
-		if len(whereSql) > 0 {
-			whereSql = whereSql + " AND " + field + " = ? "
+		if len(whereSQL) > 0 {
+			whereSQL = whereSQL + " AND " + field + " = ? "
 		} else {
-			whereSql = field + " = ?"
+			whereSQL = field + " = ?"
 		}
 	}
 
@@ -84,27 +84,27 @@ func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, optio
 			return nil, errors.New(field + " set where in condition，but value is empty")
 		}
 		bindDataList = append(bindDataList, valueList...)
-		if len(whereSql) > 0 {
-			whereSql = " AND " + field + " IN ( "
+		if len(whereSQL) > 0 {
+			whereSQL = " AND " + field + " IN ( "
 
 		} else {
-			whereSql = field + " IN ( "
+			whereSQL = field + " IN ( "
 		}
 		for i := 0; i < len(valueList)-1; i++ {
-			whereSql = whereSql + " ?, "
+			whereSQL = whereSQL + " ?, "
 		}
-		whereSql = whereSql + " )"
+		whereSQL = whereSQL + " )"
 	}
 
-	return dbClient.GormDB.Table(table).Where(whereSql, bindDataList...).Limit(option.Size).Offset((option.Page - 1) * option.Size), nil
+	return dbClient.GormDB.Table(table).Where(whereSQL, bindDataList...).Limit(option.Size).Offset((option.Page - 1) * option.Size), nil
 }
 
-// getBatchCreateSql 获取批量写入数据的sql
+// getBatchCreateSQL 获取批量写入数据的sql
 //
 // Author : go_developer@163.com<张德满>
 //
 // Date : 4:35 下午 2020/10/12
-func (bd *BaseDao) getBatchCreateSql(table string, valueList []map[string]interface{}) (string, []interface{}, error) {
+func (bd *BaseDao) getBatchCreateSQL(table string, valueList []map[string]interface{}) (string, []interface{}, error) {
 	if len(valueList) == 0 {
 		return "", nil, errors.New(table + " batch create data with nothing")
 	}
@@ -150,15 +150,33 @@ func (bd *BaseDao) getBatchCreateSql(table string, valueList []map[string]interf
 // Date : 4:50 下午 2020/10/12
 func (bd *BaseDao) BatchCreate(dbClient *godb.DBClient, table string, valueList []map[string]interface{}) error {
 	var (
-		batchCreateSql string
+		batchCreateSQL string
 		err            error
 		bindDataList   []interface{}
 	)
-	if batchCreateSql, bindDataList, err = bd.getBatchCreateSql(table, valueList); nil != err {
+	if batchCreateSQL, bindDataList, err = bd.getBatchCreateSQL(table, valueList); nil != err {
 		return err
 	}
-	if _, err = dbClient.GormDB.DB().Exec(batchCreateSql, bindDataList...); nil != err {
+	if _, err = dbClient.GormDB.DB().Exec(batchCreateSQL, bindDataList...); nil != err {
 		return err
 	}
 	return nil
+}
+
+// GetTotalDataCount 获取表中数据总量
+//
+// Author : go_developer@163.com<张德满>
+//
+// Date : 2020/11/08 01:52:34
+func (bd *BaseDao) GetTotalDataCount(dbClient *godb.DBClient, table string, optionList ...SetSearchOption) (int64, error) {
+	var (
+		totalCount  int64
+		err         error
+		queryObject *gorm.DB
+	)
+	if queryObject, err = bd.buildQueryObject(dbClient, table, optionList...); nil != err {
+		return 0, err
+	}
+	queryObject.Count(&totalCount)
+	return totalCount, nil
 }
