@@ -96,7 +96,15 @@ func (bd *BaseDao) buildQueryObject(dbClient *godb.DBClient, table string, optio
 		whereSQL = whereSQL + " )"
 	}
 
-	return dbClient.GormDB.Table(table).Where(whereSQL, bindDataList...).Limit(option.Size).Offset(int64(option.Page-1) * option.Size), nil
+	dbObj := dbClient.GormDB.Table(table).Where(whereSQL, bindDataList...)
+	if option.Size > 0 {
+		dbObj = dbObj.Limit(option.Size)
+	}
+
+	if option.Page > 0 {
+		dbObj = dbObj.Offset(int64(option.Page-1) * option.Size)
+	}
+	return dbObj, nil
 }
 
 // getBatchCreateSQL 获取批量写入数据的sql
