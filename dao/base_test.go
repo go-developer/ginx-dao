@@ -28,6 +28,6 @@ func TestGetBatchCreateSql(t *testing.T) {
 		{"name": "zhangdeman3", "age": 183, "extra": "extra"},
 	}
 	bd := new(BaseDao)
-	sql, data, err := bd.getBatchCreateSql(table, valueList)
+	sql, data, err := bd.getBatchCreateSQL(table, valueList)
 	fmt.Println(sql, data, err)
 }
